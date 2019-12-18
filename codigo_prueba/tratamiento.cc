@@ -17,7 +17,9 @@ ostream &operator<<(ostream &stream, const Tratamiento &t){
 
 	stream << "Fecha de inicio del tratamiento: " << t.getFechainicio() << endl;
 	stream << "Fecha de finalizacion del tratamiento: " << t.getFechafinacilizacion() << endl;
-	stream << "Receta: " << t.getReceta() << endl;
+	stream << "Medicamento: " << t.getMedicamento() << endl;
+	stream << "Dosis: " << t.getDosis() << endl;
+	stream << "Frecuencia: " << t.getFrecuencia() << endl;
 	return stream;
 
 }
@@ -31,9 +33,15 @@ istream &operator>>(istream &stream, Tratamiento &t){
 	cout << "Introduzca la fecha de finalizacion del tratamiento: ";
 	getline(stream, line);
 	t.setFechafinacilizacion(line);
-	cout << "Introduzca la receta del tratamiento: ";
+	cout << "Introduzca el medicamento del tratamiento: ";
 	getline(stream, line);
-	t.setReceta(line);
+	t.setMedicamento(line);
+	cout << "Introduzca la dosis del medicamento del tratamiento: ";
+	getline(stream, line);
+	t.setDosis(line);
+	cout << "Introduzca la frecuencia del medicamento del tratamiento: ";
+	getline(stream, line);
+	t.setFrecuencia(line);
 	return stream;
 
 }
@@ -41,7 +49,9 @@ void Tratamiento::setRegT(RegT r) {
 
 	fechainicio_ = r.fechainicio;
 	fechafinalizacion_ = r.fechafinalizacion;
-	receta_ = r.receta;
+	medicamento_ = r.medicamento;
+	dosis_ = r.dosis;
+	frecuencia_ = r.frecuencia;
 
 }
 
@@ -50,7 +60,9 @@ RegT Tratamiento::getRegT() const {
 	RegT r;
 	strcpy(r.fechainicio, fechainicio_.c_str());
 	strcpy(r.fechafinalizacion, fechafinalizacion_.c_str());
-	strcpy(r.receta, receta_.c_str());
+	strcpy(r.medicamento, medicamento_.c_str());
+	strcpy(r.dosis, dosis_.c_str());
+	strcpy(r.frecuencia, frecuencia_.c_str());
 	return r;
 
 }

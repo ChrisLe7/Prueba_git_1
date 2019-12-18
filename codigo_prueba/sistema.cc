@@ -47,9 +47,31 @@ void Sistema::opciones(){
 
 }
 
+int Sistema::buscaPaciente(const Paciente &p){
+
+	list <Paciente> :: iterator i;
+	for(i = pacientes_.begin(); i != pacientes_.end(); i++){
+		if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
+			return 1;
+		}
+	}
+	Reg r;
+	ifstream fichero("pacientes.bin", ios::binary);
+	while(fichero.read((char*)&r, sizeof(Reg))){
+		if(r.nombre == p.getNombre() && r.apellidos == p.getApellidos()){
+			fichero.close();
+			return 2;
+		}
+	}
+	fichero.close();
+	return 0;
+
+
+}
+
 void Sistema::leerPacientes(){
 
-	Paciente aux("", "");
+	Paciente aux("", "", "");
 	/*string nombre, apellidos;
 	int edad;
 	float peso, altura;
@@ -117,11 +139,12 @@ void Sistema::modificaDatos(Paciente &p){
 		cout<<"¿Que desea modificar?"<<endl;
 		cout<<"1. Nombre"<<endl;
 		cout<<"2. Apellidos"<<endl;
-		cout<<"3. Edad"<<endl;
-		cout<<"4. Telefono"<<endl;
-		cout<<"5. Peso"<<endl;
-		cout<<"6. Altura"<<endl;
-		cout<<"7. Guardar cambios"<<endl;
+		cout<<"3. Seguro"<<endl;
+		cout<<"4. Fecha de nacimiento"<<endl;
+		cout<<"5. Telefono"<<endl;
+		cout<<"6. Peso"<<endl;
+		cout<<"7. Altura"<<endl;
+		cout<<"8. Guardar cambios"<<endl;
 		cout<<"Elige una opcion: ";
 		cin>>opc;
 		getchar();
@@ -137,36 +160,40 @@ void Sistema::modificaDatos(Paciente &p){
 				p.setApellidos(line);
 			break;
 			case 3:
-				cout<<"Introduce la nueva edad: ";
-				cin>>n;
-				getchar();
-				p.setEdad(n);
+				cout<<"Introduce el nuevo tipo de seguro: ";
+				getline(cin, line);
+				p.setSeguro(line);
 			break;
 			case 4:
+				cout<<"Introduce la nueva fecha de nacimiento: ";
+				cin>>line;
+				p.setFechanacimiento(line);
+			break;
+			case 5:
 				cout<<"Introduce el nuevo telefono: ";
 				cin>>m;
 				getchar();
 				p.setTelefono(m);
 			break;
-			case 5:
+			case 6:
 				cout<<"Introduce el nuevo peso: ";
 				cin>>q;
 				getchar();
 				p.setPeso(q);
 			break;
-			case 6:
+			case 7:
 				cout<<"Introduce la nueva altura: ";
 				cin>>q;
 				getchar();
 				p.setAltura(q);
 			break;
-			case 7:
+			case 8:
 				cout<<"Cambios guardados"<<endl;
 			break;
 			default:
 				cout<<"Opcion no valida"<<endl;
 		}
-	}while(opc != 7);
+	}while(opc != 8);
 
 }
 
@@ -268,7 +295,7 @@ void Sistema::start(){
 		}
 	}
 	ficheroC.close();
-	Paciente aux("", "");
+	Paciente aux("", "", "");
 	Reg r;
 	ifstream fichero("pacientes.bin", ios::binary);
 	list<Cita>::iterator i;
@@ -292,10 +319,10 @@ void Sistema::menu(){
 
 	int opc;
 	string nombre, apellidos;
-	Paciente aux("", "");
-	Historial historial(""); // REVISAR
-	Tratamiento tratamiento("") ; // REVISAR
-	string receta, fecha, motivo; 
+	Paciente aux("", "", "");
+	//Historial historial(""); // REVISAR
+	//Tratamiento tratamiento("") ; // REVISAR
+	string medicamento, fecha, motivo; 
 	do{
 		getchar();
 		system(CLEAN);
@@ -331,7 +358,12 @@ void Sistema::menu(){
 				cout<<"Introduce los apellidos del paciente a modificar: ";
 				getline(cin, apellidos);
 				aux.setApellidos(apellidos);
-				modificarPaciente(aux);
+				if(modificarPaciente(aux)){
+					cout<<"Paciente modificado correctamente."<<endl;
+				}
+				else{
+					cout<<"No se encontro al paciente."<<endl;
+				}
 			break;
 			case 5:
 				cout<<"Introduce el nombre del paciente a eliminar: ";
@@ -340,7 +372,12 @@ void Sistema::menu(){
 				cout<<"Introduce los apellidos del paciente a eliminar: ";
 				getline(cin, apellidos);
 				aux.setApellidos(apellidos);
-				eliminarPaciente(aux);
+				if(eliminarPaciente(aux)){
+					cout<<"Paciente borrado correctamente."<<endl;
+				}
+				else{
+					cout<<"No se encontro al paciente."<<endl;
+				}
 			break;
 			case 6:
 				leerPacientes();
@@ -433,11 +470,11 @@ void Sistema::menu(){
 				cout<<"Introduzca los apellidos del paciente del que desea finalizar un tratamiento medico: ";
 				getline(cin, apellidos);
 				aux.setApellidos(apellidos);
-				cout<<"Introduzca la receta que desea finalizar: ";
-				getline(cin, receta);
+				cout<<"Introduzca el medicamento del tratamiento que desea finalizar: ";
+				getline(cin, medicamento);
 				cout<<"Introduzca la fecha de finalizacion del tratamiento: ";
 				getline(cin,fecha);
-				aux.finalizarTratamiento(receta, fecha);
+				aux.finalizarTratamiento(medicamento, fecha);
 			break;
 			case 17:
 				cout<<"Saliendo del programa."<<endl;
@@ -492,7 +529,7 @@ void Sistema::setPaciente(){
 			getchar();
 		}
 	}while(valida != true);*/
-	Paciente aux("", "");
+	Paciente aux("", "", "");
 	cin>>aux;
 	agregarPaciente(aux);
 
@@ -528,11 +565,27 @@ void Sistema::setPaciente(){
 bool Sistema::buscarPacientes(const Paciente &p){
 		
 	//list <Paciente> aux = getPacientes();		Es inutil pues puede acceder directamente ya que es de su propia clase
-	list <Paciente> :: iterator i;
-	for(i = pacientes_.begin(); i != pacientes_.end(); i++){
-		if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
-			return true;
+	if(buscaPaciente(p) == 1){
+		list <Paciente> :: iterator i;
+		for(i = pacientes_.begin(); i != pacientes_.end(); i++){
+			if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
+				cout << (*i);
+				return true;
+			}
 		}
+	}
+	else if(buscaPaciente(p) == 2){
+		Paciente aux("", "", "");
+		Reg r;
+		ifstream fichero("pacientes.bin", ios::binary);
+		while(fichero.read((char*)&r, sizeof(Reg))){
+			if(r.nombre == p.getNombre() && r.apellidos == p.getApellidos()){
+				aux.setReg(r);
+				cout << aux;
+			}
+		}
+		fichero.close();
+		return true;
 	}
 	return false;
 
@@ -549,15 +602,24 @@ void Sistema::mostrarPacientes(){
 
 bool Sistema::modificarPaciente(Paciente &p){
 
-	Paciente old_p("", "");
-	list <Paciente> :: iterator i;
-	for(i = pacientes_.begin(); i != pacientes_.end(); i++){
-		if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
-			old_p = *i;
-			modificaDatos(*i);
-			modificaDatosFich(old_p, *i);
-			return true;
+	if(buscaPaciente(p) == 1){
+		Paciente old_p("", "", "");
+		list <Paciente> :: iterator i;
+		for(i = pacientes_.begin(); i != pacientes_.end(); i++){
+			if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
+				old_p = *i;
+				modificaDatos(*i);
+				modificaDatosFich(old_p, *i);
+				return true;
+			}
 		}
+	}
+	else if(buscaPaciente(p) == 2){
+		Paciente old_p("", "", "");
+		old_p = p;
+		modificaDatos(p);
+		modificaDatosFich(old_p, p);
+		return true;
 	}
 	return false;
 
@@ -567,14 +629,20 @@ bool Sistema::modificarPaciente(Paciente &p){
 bool Sistema::eliminarPaciente(const Paciente &p){
 	
 	//list <Paciente> aux = getPacientes();		Igual que el anterior
-	list <Paciente> :: iterator i;
-	for(i = pacientes_.begin(); i != pacientes_.end(); i++){
-		if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
-			//Eliminar_Paciente_fich(i);
-			pacientes_.erase(i);
-			eliminarPacienteFich(p);
-			return true;
+	if(buscaPaciente(p) == 1){
+		list <Paciente> :: iterator i;
+		for(i = pacientes_.begin(); i != pacientes_.end(); i++){
+			if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
+				//Eliminar_Paciente_fich(i);
+				pacientes_.erase(i);
+				eliminarPacienteFich(p);
+				return true;
+			}
 		}
+	}
+	else if(buscaPaciente(p) == 2){
+		eliminarPacienteFich(p);
+		return true;
 	}
 	return false;
 
@@ -583,7 +651,7 @@ bool Sistema::eliminarPaciente(const Paciente &p){
 bool Sistema::concertarCita(const Paciente &p){
 
 	Cita c;
-	list <Paciente> :: iterator i;
+	/*list <Paciente> :: iterator i;
 	for(i = pacientes_.begin(); i != pacientes_.end(); i++){
 		if((*i).getNombre() == p.getNombre() && (*i).getApellidos() == p.getApellidos()){
 			c.setPaciente(p.getNombre() + " " + p.getApellidos());
@@ -592,6 +660,15 @@ bool Sistema::concertarCita(const Paciente &p){
 				insertarCita(c);
 				return true;
 			}
+		}
+	}
+	return false;*/
+	if(buscaPaciente(p) != 0){
+		c.setPaciente(p.getNombre() + " " + p.getApellidos());
+		cin>>c;
+		if(c.checkCita() == true){
+			insertarCita(c);
+			return true;
 		}
 	}
 	return false;

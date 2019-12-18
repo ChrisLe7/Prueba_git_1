@@ -16,6 +16,7 @@ class Sistema{
 		list <Paciente> pacientes_;
 		list <Cita> citas_;
 		void opciones();
+		int buscaPaciente(const Paciente &p);
 		void agregarPaciente(const Paciente &p);
 		void modificaDatos(Paciente &p);
 		void modificaDatosFich(const Paciente &p1, const Paciente &p2); //paciente 1 es el antiguo y el 2 el nuevo por si cambia el nombre o apellido

@@ -15,22 +15,12 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Paciente::Paciente(string nombre, string apellidos, int edad, double telefono, float peso, float altura){
-
-	nombre_ = nombre;
-	apellidos_ = apellidos;
-	edad_ = edad;
-	telefono_ = telefono;
-	peso_ = peso;
-	altura_ = altura;
-
-}
-
 ostream &operator<<(ostream &stream, const Paciente &p){
 
 	stream<<"Nombre: "<<p.getNombre()<<endl;
 	stream<<"Apellidos: "<<p.getApellidos()<<endl;
-	stream<<"Edad: "<<p.getEdad()<<endl;
+	stream<<"Seguro: "<<p.getSeguro()<<endl;
+	stream<<"Fecha de nacimiento: "<<p.getFechanacimiento()<<endl;
 	stream<<"Telefono: "<<p.getTelefono()<<endl;
 	stream<<"Peso: "<<p.getPeso()<<endl;
 	stream<<"Altura: "<<p.getAltura()<<endl;
@@ -40,37 +30,39 @@ ostream &operator<<(ostream &stream, const Paciente &p){
 
 istream &operator>>(istream &stream, Paciente &p){
 
-	string nombre, apellidos;
-	int edad;
-	double telefono;
-	float peso, altura;
+	string line;
+	double m;
+	float q;
 	char SN;	//Opcion que indica si quiere o no introducir el resto de datos
 	bool valida = false;	//Gestiona el bucle para que no salga en caso de introducir algo distinto de si o no
 	cout<<"Introduzca el nombre del paciente: ";
-	getline(stream, nombre);
-	p.setNombre(nombre);
+	getline(stream, line);
+	p.setNombre(line);
 	cout<<"Introduzca los apellidos del paciente: ";
-	getline(stream, apellidos);
-	p.setApellidos(apellidos);
+	getline(stream, line);
+	p.setApellidos(line);
+	cout<<"Introduzca el tipo de seguro: ";
+	getline(stream, line);
+	p.setSeguro(line);
 	do{
 		cout<<"¿Desea introducir la edad, el telefono, el peso y la altura del paciente? (S/N): ";
 		SN = getchar();
 		if('s' == SN || 'S' == SN){
-			cout<<"Introduzca la edad del paciente: ";
-			stream>>edad;
-			p.setEdad(edad);
+			cout<<"Introduzca la fecha de nacimiento del paciente: ";
+			stream>>line;
+			p.setFechanacimiento(line);
 			getchar();
 			cout<<"Introduzca el telefono del paciente: ";
-			stream>>telefono;
-			p.setTelefono(telefono);
+			stream>>m;
+			p.setTelefono(m);
 			getchar();
 			cout<<"Introduzca el peso del paciente: ";
-			stream>>peso;
-			p.setPeso(peso);
+			stream>>q;
+			p.setPeso(q);
 			getchar();
 			cout<<"Introduzca la altura del paciente: ";
-			stream>>altura;
-			p.setAltura(altura);
+			stream>>q;
+			p.setAltura(q);
 			getchar();
 			//Paciente p(nombre, apellidos, edad, telefono, peso, altura);
 			//agregarPaciente(p);
@@ -86,7 +78,6 @@ istream &operator>>(istream &stream, Paciente &p){
 			getchar();
 		}
 	}while(valida != true);
-
 	return stream;
 
 }
@@ -95,10 +86,11 @@ void Paciente::setReg(Reg r){
 
 	nombre_ = r.nombre;
 	apellidos_ = r.apellidos;
-	edad_ = r.edad;
+	fechanacimiento_ = r.fechanacimiento;
 	telefono_ = r.telefono;
 	peso_ = r.peso;
 	altura_ = r.altura;
+	seguro_ = r.seguro;
 
 }
 
@@ -107,10 +99,11 @@ Reg Paciente::getReg() const {
 	Reg r;
 	strcpy(r.nombre, nombre_.c_str());
 	strcpy(r.apellidos, apellidos_.c_str());
-	r.edad = edad_;
+	strcpy(r.fechanacimiento, fechanacimiento_.c_str());
 	r.telefono = telefono_;
 	r.peso = peso_;
 	r.altura = altura_;
+	strcpy(r.seguro, seguro_.c_str());
 	return r;
 
 }
@@ -163,14 +156,14 @@ void Paciente::aniadirTratamiento(){
 
 }
 
-void Paciente::finalizarTratamiento(string receta, string fechafinalizacion){
+void Paciente::finalizarTratamiento(string medicamento, string fechafinalizacion){
 
 	Tratamiento aux;
 	RegT r;
 	int pos;
 	fstream fichero(nombre_ + "_" + apellidos_ + "_tratamiento.bin", ios::binary | ios::in | ios::out);
 	while(fichero.read((char*)&r, sizeof(RegT))){
-		if(r.receta == receta){
+		if(r.medicamento == medicamento){
 			aux.setRegT(r);
 			aux.setFechafinacilizacion(fechafinalizacion);
 			pos = fichero.tellg() / sizeof(RegT);

@@ -43,25 +43,3 @@ void Historial::setRegH(RegH r){
 	motivo_ = r.motivo;
 
 }
-/*
-void Historial::mostrarHistorial(string nomFich){
-
-	Historial aux("");
-	RegH r;
-	ifstream fichero(nomFich + "_historial.bin", ios::binary);
-	while(fichero.read((char*)&r, sizeof(RegH))){
-		aux.setRegH(r);
-		cout << aux;
-	}
-	fichero.close();
-
-}
-
-void Historial::aniadirHistorial(string nomFich){
-
-	RegH r = getRegH();
-	ofstream fichero(nomFich + "_historial.bin", ios::binary | ios::app);
-	fichero.write((char*)&r, sizeof(RegH));
-	fichero.close();
-
-}*/

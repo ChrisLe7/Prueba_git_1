@@ -3,6 +3,8 @@
 #include <cstdio>
 #include <fstream>
 #include "paciente.h"
+#include "tratamiento.h"
+#include "historial.h"
 
 using std::ifstream;
 using std::ofstream;
@@ -64,13 +66,9 @@ istream &operator>>(istream &stream, Paciente &p){
 			stream>>q;
 			p.setAltura(q);
 			getchar();
-			//Paciente p(nombre, apellidos, edad, telefono, peso, altura);
-			//agregarPaciente(p);
 			valida = true;
 		}
 		else if('n' == SN || 'N' == SN){
-			//Paciente p(nombre, apellidos);
-			//agregarPaciente(p);
 			valida = true;
 		}
 		else{

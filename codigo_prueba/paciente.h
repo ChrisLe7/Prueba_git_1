@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <list>
-#include "cita.h"
 #include "tratamiento.h"
 #include "historial.h"
 

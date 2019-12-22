@@ -42,8 +42,6 @@ class Historial{
 		inline string getFecha() const {return fecha_;}
 		inline string getMotivo() const {return motivo_;}
 		RegH getRegH() const;
-		/*void mostrarHistorial(string nomFich);
-		void aniadirHistorial(string nomFich);*/
 
 };
 

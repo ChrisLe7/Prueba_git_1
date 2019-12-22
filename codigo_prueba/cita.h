@@ -22,6 +22,8 @@ class Cita{
 		string fecha_;
 		string hora_;
 		string paciente_;
+		bool checkFecha(int dia, int mes, int anio);
+		bool checkHora(int hora, int minuto);
 	
 	public:
 	
@@ -40,9 +42,8 @@ class Cita{
 		inline string getPaciente() const {return paciente_;}
 		RegC getRegC() const;
 		bool checkCita();
-		//bool ConcertarCita() {if (check_cita() == true) {InsertarCita();return true;} else {/*VOLVER A INTRODUCIR UNA CITA _ SE PUEDE IMPLEMENTAR AQUI O EN LA FUNCION PRINCIPAL*/ return false;}}
-		//bool ModificarCita () ;
-		//bool EliminarCita () ;
+		void introducirFecha();
+		void introducirHora();
 	
 };
 

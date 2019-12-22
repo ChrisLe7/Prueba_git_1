@@ -48,9 +48,6 @@ class Tratamiento{
 		inline string getDosis() const {return dosis_;}
 		inline string getFrecuencia() const {return frecuencia_;}
 		RegT getRegT() const;
-		/*void mostrarTratamiento(string nomFich);
-		void aniadirTratamiento(string nomFich);
-		void finalizarTratamiento(string nomFich, string receta, string fechafinalizacion);*/
 
 };
 

@@ -18,7 +18,7 @@ ostream &operator<<(ostream &stream, const Historial &h){
 istream &operator>>(istream &stream, Historial &h){
 
 	string line;
-	cout << "Introduzca la fecha de la consulta que desee introducir en el historial: ";
+	cout << "Introduzca la fecha de la consulta que desee introducir en el historial (dd/mm/aaaa): ";
 	getline(stream,line);
 	h.setFecha(line);
 	cout << "Introduzca los motivos de la consulta: ";

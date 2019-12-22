@@ -130,7 +130,7 @@ void Sistema::modificaDatos(Paciente &p){
 				p.setSeguro(line);
 			break;
 			case 4:
-				cout<<"Introduce la nueva fecha de nacimiento: ";
+				cout<<"Introduce la nueva fecha de nacimiento  (dd/mm/aaaa): ";
 				cin>>line;
 				p.setFechanacimiento(line);
 			break;
@@ -278,6 +278,7 @@ void Sistema::menu(){
 	Paciente aux("", "", "");
 	string medicamento, fecha, motivo; 
 	do{
+		cout<<"Pulse intro para continuar."<<endl;
 		getchar();
 		system(CLEAN);
 		opciones();
@@ -414,7 +415,7 @@ void Sistema::menu(){
 				aux.setApellidos(apellidos);
 				cout<<"Introduzca el medicamento del tratamiento que desea finalizar: ";
 				getline(cin, medicamento);
-				cout<<"Introduzca la fecha de finalizacion del tratamiento: ";
+				cout<<"Introduzca la fecha de finalizacion del tratamiento (dd/mm/aaaa): ";
 				getline(cin,fecha);
 				aux.finalizarTratamiento(medicamento, fecha);
 			break;
@@ -484,6 +485,12 @@ bool Sistema::modificarPaciente(Paciente &p){
 				old_p = *i;
 				modificaDatos(*i);
 				modificaDatosFich(old_p, *i);
+				string new_nombre = (*i).getNombre() + "_" + (*i).getApellidos() + "_tratamiento.bin";
+				string old_nombre = old_p.getNombre() + "_" + old_p.getApellidos() + "_tratamiento.bin";
+				rename(old_nombre.c_str(), new_nombre.c_str());
+				new_nombre = (*i).getNombre() + "_" + (*i).getApellidos() + "_historial.bin";
+				old_nombre = old_p.getNombre() + "_" + old_p.getApellidos() + "_historial.bin";
+				rename(old_nombre. c_str(), new_nombre.c_str());
 				return true;
 			}
 		}
@@ -493,6 +500,12 @@ bool Sistema::modificarPaciente(Paciente &p){
 		old_p = p;
 		modificaDatos(p);
 		modificaDatosFich(old_p, p);
+		string new_nombre = p.getNombre() + "_" + p.getApellidos() + "_tratamiento.bin";
+		string old_nombre = old_p.getNombre() + "_" + old_p.getApellidos() + "_tratamiento.bin";
+		rename(old_nombre.c_str(), new_nombre.c_str());
+		new_nombre = p.getNombre() + "_" + p.getApellidos() + "_historial.bin";
+		old_nombre = old_p.getNombre() + "_" + old_p.getApellidos() + "_historial.bin";
+		rename(old_nombre. c_str(), new_nombre.c_str());
 		return true;
 	}
 	return false;
@@ -523,11 +536,19 @@ bool Sistema::eliminarPaciente(const Paciente &p){
 bool Sistema::concertarCita(const Paciente &p){
 
 	Cita c;
+	time_t fecha = time(NULL);
+	struct tm * dia = localtime(&fecha);
+	char buffer[20];
+	strftime(buffer, 20, "%d/%m/%Y", dia);
+	string line = buffer;
 	if(buscaPaciente(p) != 0){
 		c.setPaciente(p.getNombre() + " " + p.getApellidos());
 		cin>>c;
 		if(c.checkCita() == true){
 			insertarCita(c);
+			if(c.getFecha() == line){
+				citas_.push_back(c);
+			}
 			return true;
 		}
 	}

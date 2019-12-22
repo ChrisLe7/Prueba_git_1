@@ -50,7 +50,7 @@ istream &operator>>(istream &stream, Paciente &p){
 		cout<<"¿Desea introducir la edad, el telefono, el peso y la altura del paciente? (S/N): ";
 		SN = getchar();
 		if('s' == SN || 'S' == SN){
-			cout<<"Introduzca la fecha de nacimiento del paciente: ";
+			cout<<"Introduzca la fecha de nacimiento del paciente (dd/mm/aaaa): ";
 			stream>>line;
 			p.setFechanacimiento(line);
 			getchar();

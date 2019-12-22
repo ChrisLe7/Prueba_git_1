@@ -67,7 +67,14 @@ bool Cita::checkHora(int hora, int minuto){
 	if(line == getFecha()){
 		strftime(buffer, 5, "%H", horasistema);
 		if(hora >= atoi(buffer) && hora <=23){
-			if(minuto >= 0 && minuto <= 59){
+			if(hora == atoi(buffer)){
+				strftime(buffer, 5, "%M", horasistema);
+				if(minuto >= atoi(buffer) && minuto <= 59){
+					return true;
+				}
+				return false;
+			}
+			else if(minuto >= 0 && minuto <= 59){
 				return true;
 			}
 			return false;

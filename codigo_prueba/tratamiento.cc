@@ -27,10 +27,10 @@ ostream &operator<<(ostream &stream, const Tratamiento &t){
 istream &operator>>(istream &stream, Tratamiento &t){
 
 	string line;
-	cout << "Introduzca la fecha de inicio del tratamiento: ";
+	cout << "Introduzca la fecha de inicio del tratamiento (dd/mm/aaaa): ";
 	getline(stream, line);
 	t.setFechainicio(line);
-	cout << "Introduzca la fecha de finalizacion del tratamiento: ";
+	cout << "Introduzca la fecha de finalizacion del tratamiento (dd/mm/aaaa): ";
 	getline(stream, line);
 	t.setFechafinacilizacion(line);
 	cout << "Introduzca el medicamento del tratamiento: ";

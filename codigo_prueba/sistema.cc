@@ -219,15 +219,9 @@ void Sistema::modificaDatosCita(Cita &c){
 		getchar();
 		switch(opc){
 			case 1:
-				/*cout<<"Introduce la nueva fecha: ";
-				getline(cin, line);
-				c.setFecha(line);*/
 				c.introducirFecha();
 			break;
 			case 2:
-				/*cout<<"Introduce la nueva hora: ";
-				getline(cin, line);
-				c.setHora(line);*/
 				c.introducirHora();
 			break;
 			case 3:

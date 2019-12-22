@@ -124,20 +124,18 @@ void Cita::introducirHora(){
 	string hora, minuto;
 	string line;
 	string tiempo = buffer;
-	//do{
-		do{
-			cout << "Introduzca la hora (hh:mm, formato 24h): ";
-			getline(cin, line);
-			hora = line.substr(0, line.find(":"));
-			minuto = line.substr(line.find(":") + 1);
-		}while(checkHora(stoi(hora), stoi(minuto)) == false);
-		if(stoi(hora) < 10 && hora.length() < 2){
-			hora = "0" + hora;
-		}
-		if(stoi(minuto) < 10 && minuto.length() < 2){
-			minuto = "0" + minuto;
-		}
-	//}while(hora + ":" + minuto < tiempo);
+	do{
+		cout << "Introduzca la hora (hh:mm, formato 24h): ";
+		getline(cin, line);
+		hora = line.substr(0, line.find(":"));
+		minuto = line.substr(line.find(":") + 1);
+	}while(checkHora(stoi(hora), stoi(minuto)) == false);
+	if(stoi(hora) < 10 && hora.length() < 2){
+		hora = "0" + hora;
+	}
+	if(stoi(minuto) < 10 && minuto.length() < 2){
+		minuto = "0" + minuto;
+	}
 	setHora(hora + ":" + minuto);
 
 }
@@ -153,33 +151,7 @@ ostream &operator<<(ostream &stream, const Cita &c){
 
 istream &operator>>(istream &stream, Cita &c){
 
-	/*time_t date = time(NULL);
-	struct tm * time = localtime(&date);
-	char buffer[20];
-	strftime(buffer, 20, "%Y/%m/%d", time);
-	string dia, mes, anio;
-	string line;
-	string fecha = buffer;
-	do{
-		do{
-			cout << "Introduzca la fecha (dd/mm/aaaa): ";
-			getline(stream, line);
-			dia = line.substr(0, line.find("/"));
-			anio = line.substr(line.rfind("/") + 1);
-			mes = line.substr(line.find("/") + 1, line.length() - dia.length() - anio.length() - 2);
-		}while(c.checkFecha(stoi(dia), stoi(mes), stoi(anio)) == false);
-		if(stoi(dia) < 10 && dia.length() < 2){
-			dia = "0" + dia;
-		}
-		if(stoi(mes) < 10 && mes.length() < 2){
-			mes = "0" + mes;
-		}
-	}while((anio + "/" + mes + "/" + dia) < fecha);
-	c.setFecha(dia + "/" + mes + "/" + anio);*/
-	//string line;
 	c.introducirFecha();
-	//cout << "Introduzca la hora (hh:mm): ";
-	//getline(stream, line);
 	c.introducirHora();
 	return stream;
 
